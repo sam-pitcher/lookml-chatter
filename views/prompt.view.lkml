@@ -22,8 +22,6 @@ view: prompt {
         -- Previous conversation:
         -- " || formatted_chat_history || "
 
-        From this, please answer this question:
-
           From this, please answer this question:
           {{input_question._parameter_value}}
 
@@ -40,7 +38,7 @@ view: prompt {
   }
 
   parameter: input_question {
-    type: string
+    type: unquoted
   }
   dimension: generated_content {}
 
