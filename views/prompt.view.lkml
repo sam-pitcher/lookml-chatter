@@ -38,7 +38,7 @@ view: prompt {
   }
 
   parameter: input_question {
-    type: unquoted
+    type: string
   }
   dimension: generated_content {}
 
