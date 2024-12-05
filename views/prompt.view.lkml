@@ -39,7 +39,9 @@ view: prompt {
     ;;
   }
 
-  parameter: input_question {}
+  parameter: input_question {
+    type: string
+  }
   dimension: generated_content {}
 
 }
