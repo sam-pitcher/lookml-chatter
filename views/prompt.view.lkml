@@ -19,8 +19,8 @@ view: prompt {
           You are an expert assistant on this subject:
           @{preamble}
 
-        -- Previous conversation:
-        -- " || formatted_chat_history || "
+          -- Previous conversation:
+          {{previous_messages._parameter_value}}
 
           From this, please answer this question:
           {{input_question._parameter_value}}
@@ -37,9 +37,10 @@ view: prompt {
     ;;
   }
 
-  parameter: input_question {
-    type: string
-  }
+  parameter: input_question {}
+
+  parameter: previous_messages {}
+
   dimension: generated_content {}
 
 }
