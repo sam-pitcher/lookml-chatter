@@ -1,5 +1,9 @@
 project_name: "chatter"
 
+constant: example_table_name {
+  value: "sam-pitcher-playground.chatter.examples_test"
+}
+
 constant: preamble {
   value: "
     Football, also known as soccer in some parts of the world, is a team sport played with a spherical ball between two teams of eleven players. It is the world's most popular sport, played by over 250 million players in over 200 countries and dependencies. The game is played on a rectangular field called a pitch with a goal at each end. The object of the game is to score by moving the ball beyond the goal line into the opposing goal.  
@@ -47,18 +51,108 @@ This is just a brief overview of the beautiful game. There are countless nuances
   "
 }
 
+constant: examples {
+  value: "
+
+  input_question: What are the total sales amount and status of all orders?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.fields':'['order_items.total_sales_amount','order_items.status']','query.filters':null,'query.limit':500,'query.column_limit':null,'query.sorts':null}
+
+
+  input_question: What is the sales amount by status for the last 7 days?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.id':2550,'query.fields':'['order_items.status','order_items.total_sales_amount']','query.filters':'{'order_items.created_date':'7 days'}','query.limit':500,'query.column_limit':'50','query.sorts':'['order_items.total_sales_amount desc 0']','history.count':10}
+
+
+  input_question: How many orders are there by status for the last 7 days?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.id':1021,'query.fields':'['order_items.status','order_items.count']','query.filters':'{'order_items.created_date':'7 day'}','query.limit':500,'query.column_limit':'50','query.sorts':'['order_items.count desc 0']','history.count':9}
+
+
+  input_question: How does the total sales amount and year-to-date sales amount break down by the first dimension?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.id':2502,'query.fields':'['order_items.dimension_from_parameter_1','order_items.total_sales_amount','order_items.total_sales_amount_ytd']','query.filters':'{'order_items.dimension_1':'status'}','query.limit':500,'query.column_limit':'50','query.sorts':'['order_items.dimension_from_parameter_1']','history.count':5}
+
+
+  input_question: What is the total sales amount for the past year?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.id':1904,'query.fields':'['order_items.total_sales_amount']','query.filters':'{'order_items.created_month':'1 years'}','query.limit':500,'query.column_limit':'50','query.sorts':null,'history.count':4}
+
+
+  input_question: How many orders were placed each day in the last 7 days?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.id':1027,'query.fields':'['order_items.count','order_items.created_date']','query.filters':'{'order_items.created_date':'7 day'}','query.limit':500,'query.column_limit':'50','query.sorts':'['order_items.created_date desc']','history.count':4}
+
+
+  input_question: How are sales and cumulative sales changing over time in November 2024?
+
+  output_json: {'query.model':'thelook','query.view':'order_items','query.id':1053,'query.fields':'['order_items.count','order_items.created_date','order_items.total_sales_amount','order_items.cum_sales_amount']','query.filters':'{'order_items.created_month_year':'11-2024'}','query.limit':500,'query.column_limit':'50','query.sorts':'['order_items.created_date desc']','history.count':3}
+
+  "
+}
+
+# constant: examples {
+#   value: "
+
+#   input_question: How many sales were there, and when were they created?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.count,__record_count,sales_denormalized.creation_date&&sorts=&limit=&column_limit=&origin=share-expanded
+
+
+#   input_question: How many sales are available, and when were they created?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.count,__record_count,sales_denormalized.creation_date&f[sales_denormalized.status]=available&sorts=&limit=&column_limit=&origin=share-expanded
+
+
+#   input_question: How many sales were made on each date?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.creation_date,__record_count,sales_denormalized.count&&sorts=&limit=&column_limit=&origin=share-expanded
+
+
+#   input_question: How many available sales were there each day?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.creation_date,__record_count,sales_denormalized.count&f[sales_denormalized.status]=available&sorts=&limit=&column_limit=&origin=share-expanded
+
+
+#   input_question: How many sales were made each day?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.count,__record_count,sales_denormalized.creation_date&&sorts=sales_denormalized.creation_date asc &limit=5000&column_limit=&origin=share-expanded
+
+
+#   input_question: How many available sales are there, and what's the total number of sales records?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.count,__record_count,sales_denormalized.status&f[sales_denormalized.status]=available&sorts=sales_denormalized.count desc &limit=5000&column_limit=&origin=share-expanded
+
+
+#   input_question: How many available items are there, and what's the total count of items?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.status,__record_count,sales_denormalized.count&f[sales_denormalized.status]=available&sorts=sales_denormalized.count desc &limit=5000&column_limit=&origin=share-expanded
+
+
+#   input_question: How many sales are there, and how many unique customers are involved?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.count,__record_count,sales_denormalized.customer_key&&sorts=sales_denormalized.count desc &limit=5000&column_limit=&origin=share-expanded
+
+#   input_question: How many orders last year?
+
+#   output_url: https://452227bf-6f71-4262-bb19-e913e4ee41db.looker.app/embed/explore/shred/sales_denormalized?fields=sales_denormalized.count&f[sales_denormalized.creation_date]=1+year+ago+for+1+year&limit=5000&column_limit=50&origin=share-expanded
+
+#   "
+# }
+
 application: chatter {
   label: "Chatter"
   url: "https://localhost:8080/bundle.js"
   # file: "bundle.js"
   entitlements: {
-    core_api_methods: ["me", "lookml_model_explore","create_sql_query","run_sql_query","run_query","create_query", "run_inline_query"]
+    core_api_methods: ["me", "lookml_model_explore","create_sql_query","run_sql_query","run_query","create_query", "run_inline_query", "all_lookml_models", "use_form_submit", "lookml_model"]
     navigation: yes
     use_embeds: yes
     use_iframes: yes
     new_window: yes
     new_window_external_urls: ["https://developers.generativeai.google/*"]
     local_storage: yes
-    external_api_urls: ["https://us-central1-sam-pitcher-playground.cloudfunctions.net/explore-assistant-api"]
+    # external_api_urls: ["https://us-central1-sam-pitcher-playground.cloudfunctions.net/explore-assistant-api"]
+    external_api_urls : ["https://us-central1-sam-pitcher-playground.cloudfunctions.net","https://localhost:8080","http://localhost:8080"]
   }
 }
