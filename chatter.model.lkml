@@ -9,4 +9,9 @@ explore: routing_prompt {}
 explore: json_prompt {}
 
 explore: examples {}
+
 explore: examples_uploader {}
+
+explore: fields {}
+
+explore: summary_prompt {}

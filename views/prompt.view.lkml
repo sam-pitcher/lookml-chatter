@@ -3,6 +3,17 @@ view: chat_prompt {
     sql:
     WITH
 
+fields_cte AS (
+  SELECT STRING_AGG(
+      CONCAT(
+          'field: ', field, '\n',
+          'description: ', field, '\n'
+      )
+  ) AS fields
+  FROM ${fields.SQL_TABLE_NAME}
+  WHERE explore = {{explore._parameter_value}} and model = {{model._parameter_value}}
+),
+
 examples_cte AS (
   SELECT STRING_AGG(
       CONCAT(
@@ -11,11 +22,11 @@ examples_cte AS (
       )
   ) AS examples
   FROM ${examples.SQL_TABLE_NAME}
-  WHERE explore = "order_items" and model = "thelook"
+  WHERE explore = {{explore._parameter_value}} and model = {{model._parameter_value}}
 ),
 
 prompt_template AS (
-  SELECT REPLACE("""
+  SELECT REPLACE(REPLACE("""
   You are tasked with generating a JSON object for a Looker API query based on the given input question. The JSON must follow this exact structure and type formatting:
   {
     "query.model": "{model}",
@@ -38,16 +49,32 @@ prompt_template AS (
     - "query.column_limit": String specifying the maximum columns, default to '50' if not mentioned.
     - "query.sorts": Comma-separated sorting fields wrapped in single quotes and square brackets.
 
-  ### Task:
-  Based on the input question below, generate the corresponding JSON query. Ensure:
-  1. All fields are formatted as per the example.
-  2. Only return the JSON object, nothing else. It must start and end with {} only.
+  - **Available Fields**:
+  - Only these fields can be used in the JSON response.
+  - Note that they are in the format view_name.field_name.
+  - You must always keep the fields as they as, don't switch the view_name with other fields.
 
-  input_question: '{{prompt_input._parameter_value}}'
+  FIELDS_LIST
+
+  ### Task:
+  Based on the input question below and prior messages, generate the corresponding JSON query. Ensure:
+  - The query reflects the intent of the input question and incorporates insights from prior messages, including temporal dimensions (e.g., year, quarter).
+  - The generated JSON starts and ends with {} only and adheres to the provided structure.
+  - Prioritize precision and ensure the inclusion of all referenced fields when explicitly or implicitly mentioned.
+  - Focus on the previous messages in the conversation so far.
+
+  # Previous Messages:
+  This is the conversation so far between you (bot) and the user.
+  '{{previous_messages._parameter_value}}'
+
+  input_question:
+  '{{prompt_input._parameter_value}}'
   """,
   "INPUT_EXAMPLES",
   examples_cte.examples
-  ) AS generated_prompt FROM examples_cte
+  ),
+  "FIELDS_LIST",
+  fields_cte.fields) AS generated_prompt FROM examples_cte, fields_cte
 )
 
 SELECT ml_generate_text_llm_result AS generated_content
@@ -68,11 +95,15 @@ FROM ML.GENERATE_TEXT(
 
     ;;
   }
-  parameter: prompt_input {}
+  parameter: prompt_input {type:string}
 
   parameter: input_question {}
 
-  parameter: previous_messages {}
+  parameter: previous_messages {type:string}
+
+  parameter: model {default_value:"thelook"}
+
+  parameter: explore {default_value:"order_items"}
 
   dimension: generated_content {}
 }
