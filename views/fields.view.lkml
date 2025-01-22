@@ -1,5 +1,5 @@
 view: fields {
-  sql_table_name: `sam-pitcher-playground.chatter.fields` ;;
+  sql_table_name: `@{fields_table_name}` ;;
 
   dimension: available_in_chatter {
     type: yesno

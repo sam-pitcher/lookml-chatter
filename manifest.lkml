@@ -1,11 +1,11 @@
 project_name: "chatter"
 
 constant: example_table_name {
-  value: "sam-pitcher-playground.chatter.examples_test"
+  value: "chatter.examples"
 }
 
 constant: fields_table_name {
-  value: "sam-pitcher-playground.chatter.examples_test"
+  value: "chatter.fields"
 }
 
 application: chatter {
