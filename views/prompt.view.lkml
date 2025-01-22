@@ -11,7 +11,7 @@ fields_cte AS (
       )
   ) AS fields
   FROM ${fields.SQL_TABLE_NAME}
-  WHERE explore = {{explore._parameter_value}} and model = {{model._parameter_value}}
+  WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
 ),
 
 examples_cte AS (
@@ -22,7 +22,7 @@ examples_cte AS (
       )
   ) AS examples
   FROM ${examples.SQL_TABLE_NAME}
-  WHERE explore = {{explore._parameter_value}} and model = {{model._parameter_value}}
+  WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
 ),
 
 prompt_template AS (
@@ -59,7 +59,7 @@ prompt_template AS (
   ### Task:
   Based on the input question below and prior messages, generate the corresponding JSON query. Ensure:
   - The query reflects the intent of the input question and incorporates insights from prior messages, including temporal dimensions (e.g., year, quarter).
-  - The generated JSON starts and ends with {} only and adheres to the provided structure.
+  - The generated JSON starts and ends with {} only and adheres to the provided structure. Do not include json ```
   - Prioritize precision and ensure the inclusion of all referenced fields when explicitly or implicitly mentioned.
   - Focus on the previous messages in the conversation so far.
 
