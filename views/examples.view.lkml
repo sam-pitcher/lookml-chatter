@@ -11,7 +11,6 @@ view: examples {
     sql: ${TABLE}.model ;;
   }
 
-
   dimension: input_question {
     type: string
     sql: ${TABLE}.input_question ;;
@@ -22,20 +21,4 @@ view: examples {
     sql: ${TABLE}.output_json ;;
   }
 
-}
-
-view: examples_uploader {
-  derived_table: {
-    create_process: {
-      sql_step:
-      CREATE OR REPLACE TABLE `@{example_table_name}` AS (
-      SELECT * FROM `sam-pitcher-playground.chatter.examples`
-      )
-      ;;
-      sql_step:
-      CREATE OR REPLACE TABLE ${SQL_TABLE_NAME} AS (SELECT 1 as one) ;;
-    }
-    persist_for: "1 second"
-  }
-  dimension: one {}
 }

@@ -8,6 +8,11 @@ constant: fields_table_name {
   value: "chatter.fields"
 }
 
+constant: extra_context_table_name {
+  value: "chatter.extra_context"
+}
+
+
 application: chatter {
   label: "Chatter"
   url: "https://localhost:8080/bundle.js"
