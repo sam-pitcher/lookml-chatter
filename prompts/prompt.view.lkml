@@ -25,8 +25,18 @@ examples_cte AS (
   WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
 ),
 
+extra_context_cte AS (
+  SELECT STRING_AGG(
+      CONCAT(
+          'extra_context: ', extra_context, '\n'
+      )
+  ) AS extra_context
+  FROM ${extra_context.SQL_TABLE_NAME}
+  WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
+),
+
 prompt_template AS (
-  SELECT REPLACE(REPLACE("""
+  SELECT REPLACE(REPLACE(REPLACE("""
   You are tasked with generating a JSON object for a Looker API query based on the given input question. The JSON must follow this exact structure and type formatting:
   {
     "query.model": "{model}",
@@ -67,6 +77,9 @@ prompt_template AS (
   This is the conversation so far between you (bot) and the user.
   '{{previous_messages._parameter_value}}'
 
+  # Extra Context:
+  EXTRA_CONTEXT
+
   input_question:
   '{{prompt_input._parameter_value}}'
   """,
@@ -74,7 +87,10 @@ prompt_template AS (
   examples_cte.examples
   ),
   "FIELDS_LIST",
-  fields_cte.fields) AS generated_prompt FROM examples_cte, fields_cte
+  fields_cte.fields
+  ),
+  "EXTRA_CONTEXT",
+  extra_context_cte.extra_context) AS generated_prompt FROM examples_cte, fields_cte, extra_context_cte
 )
 
 SELECT ml_generate_text_llm_result AS generated_content
