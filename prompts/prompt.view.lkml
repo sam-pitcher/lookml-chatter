@@ -66,6 +66,58 @@ prompt_template AS (
 
   FIELDS_LIST
 
+  - **Dates Filter Syntax**:
+
+Basic Time Intervals
+this {interval}
+Example: this month
+Notes: Supports this week, this month, this quarter, or this year. Does not support this day. Use today for current-day data.
+Relative Time Intervals
+{n} {interval}
+Example: 3 days
+{n} {interval} ago
+Example: 3 days ago
+{n} {interval} ago for {n} {interval}
+Example: 3 months ago for 2 days
+before {n} {interval} ago
+Example: before 3 days ago
+Specific Times
+before {time}
+Example: before 2018-01-01 12:00:00
+Notes: Not inclusive of the time specified. For example, before 2018-01-01 excludes data from 2018-01-01.
+after {time}
+Example: after 2018-10-05
+Notes: Inclusive of the time specified. For example, after 2018-10-05 includes data from 2018-10-05 onward.
+Time Ranges
+{time} to {time}
+Example: 2018-05-18 12:00:00 to 2018-05-18 14:00:00
+Notes: The start time is inclusive, but the end time is not. For instance, 2018-05-18 12:00:00 to 2018-05-18 14:00:00 retrieves data up to 13:59:59.
+this {interval} to {interval}
+Example: this year to second
+Notes: Retrieves data from the start of the first interval to the start of the second. For example, this week to day covers the beginning of the week through the beginning of the current day.
+Advanced Use Cases
+{time} for {n} {interval}
+Example: 2018-01-01 12:00:00 for 3 days
+today
+Retrieves data from the current day.
+yesterday
+Retrieves data from the previous day.
+tomorrow
+Retrieves data from the following day.
+{day of week}
+Example: Monday
+Notes: Refers to the most recent occurrence of the specified day. For example, Monday returns the most recent Monday. You can combine this with before or after for advanced filtering:
+after Monday: Returns data from the most recent Monday onward.
+before Monday: Returns data before the most recent Monday, excluding the Monday itself.
+Future Intervals
+next {interval}
+Example: next week
+Notes: Only works with specific intervals like week, month, quarter, fiscal quarter, year, and fiscal year.
+{n} {interval} from now
+Example: 3 days from now
+{n} {interval} from now for {n} {interval}
+Example: 3 days from now for 2 weeks
+
   ### Task:
   Based on the input question below and prior messages, generate the corresponding JSON query. Ensure:
   - The query reflects the intent of the input question and incorporates insights from prior messages, including temporal dimensions (e.g., year, quarter).
