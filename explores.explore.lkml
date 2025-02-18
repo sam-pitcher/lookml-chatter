@@ -1,6 +1,7 @@
 include: "/views/*.view.lkml"
 include: "/prompts/*.view.lkml"
 
+explore: agents {}
 explore: examples {}
 explore: fields {}
 explore: extra_context {}

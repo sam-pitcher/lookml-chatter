@@ -10,8 +10,8 @@ fields_cte AS (
           'description: ', field, '\n'
       )
   ) AS fields
-  FROM ${fields.SQL_TABLE_NAME}
-  WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
+  FROM ${fields.SQL_TABLE_NAME} f INNER JOIN ${agents.SQL_TABLE_NAME} a ON f.model=a.model and f.explore=a.explore
+  WHERE a.agent_name = {{agent._parameter_value | replace: "\'", ""}}
 ),
 
 examples_cte AS (
@@ -21,8 +21,8 @@ examples_cte AS (
           'output_json: ', output_json, '\n'
       )
   ) AS examples
-  FROM ${examples.SQL_TABLE_NAME}
-  WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
+  FROM ${examples.SQL_TABLE_NAME} f INNER JOIN ${agents.SQL_TABLE_NAME} a ON f.model=a.model and f.explore=a.explore
+  WHERE a.agent_name = {{agent._parameter_value | replace: "\'", ""}}
 ),
 
 extra_context_cte AS (
@@ -31,8 +31,10 @@ extra_context_cte AS (
           'extra_context: ', extra_context, '\n'
       )
   ) AS extra_context
-  FROM ${extra_context.SQL_TABLE_NAME}
-  WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
+  FROM ${extra_context.SQL_TABLE_NAME} f INNER JOIN ${agents.SQL_TABLE_NAME} a ON f.model=a.model and f.explore=a.explore
+  WHERE a.agent_name = {{agent._parameter_value | replace: "\'", ""}}
+  -- FROM ${extra_context.SQL_TABLE_NAME}
+  -- WHERE explore = {{explore._parameter_value | replace: "\'", ""}} and model = {{model._parameter_value | replace: "\'", ""}}
 ),
 
 prompt_template AS (
@@ -172,6 +174,8 @@ FROM ML.GENERATE_TEXT(
   parameter: model {default_value:"thelook"}
 
   parameter: explore {default_value:"order_items"}
+
+  parameter: agent {default_value:"order_items"}
 
   dimension: generated_content {}
 }
