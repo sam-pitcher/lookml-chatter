@@ -1,6 +1,11 @@
 view: examples {
   sql_table_name: `@{example_table_name}` ;;
 
+  dimension: agent_name {
+    type: string
+    sql: ${TABLE}.agent_name ;;
+  }
+
   dimension: explore {
     type: string
     sql: ${TABLE}.explore ;;

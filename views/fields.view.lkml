@@ -1,6 +1,9 @@
 view: fields {
   sql_table_name: `@{fields_table_name}` ;;
-
+  dimension: agent_name {
+    type: string
+    sql: ${TABLE}.agent_name ;;
+  }
   dimension: available_in_chatter {
     type: yesno
     sql: ${TABLE}.available_in_chatter ;;
