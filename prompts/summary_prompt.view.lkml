@@ -3,15 +3,14 @@ view: summary_prompt {
     sql:
     WITH
 
-    fields_cte AS (
+fields_cte AS (
   SELECT STRING_AGG(
       CONCAT(
           'field: ', field, '\n',
           'description: ', field, '\n'
       )
   ) AS fields
-  FROM ${fields.SQL_TABLE_NAME}
-  WHERE explore = {{explore._parameter_value}} and model = {{model._parameter_value}}
+  FROM ${fields.SQL_TABLE_NAME} WHERE agent_name = {{agent._parameter_value | replace: "\'", ""}}
 ),
 
     prompt_template AS (
@@ -84,6 +83,7 @@ JSON to summarize:
   parameter: output_json {type:string}
   parameter: model {default_value:"thelook"}
   parameter: explore {default_value:"order_items"}
+  parameter: agent {default_value:"Customer 360"}
 
   dimension: generated_content {}
 }
