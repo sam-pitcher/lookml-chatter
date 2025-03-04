@@ -19,8 +19,9 @@ constant: extra_context_table_name {
 
 application: chatter {
   label: "Chatter"
-  url: "https://localhost:8080/bundle.js"
-  # file: "bundle.js" - this is used in prod!
+  # url: "https://localhost:8080/bundle.js"
+  # - this is used in prod!
+  file: "bundle.js"
   entitlements: {
     core_api_methods: ["me", "lookml_model_explore","create_sql_query","run_sql_query","run_query","create_query", "run_inline_query", "all_lookml_models", "use_form_submit", "lookml_model", "create_merge_query", "merge_query"]
     navigation: yes
