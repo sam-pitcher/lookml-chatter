@@ -1,4 +1,5 @@
 view: agents {
+  # extension: required
   sql_table_name: `@{agents_table_name}` ;;
 
   dimension: explore {
@@ -17,3 +18,22 @@ view: agents {
   }
 
 }
+
+# include: "//chatter_lookml/views/*.view.lkml"
+
+# view: +agents {
+#   derived_table: {
+#     sql:
+#     SELECT
+#       'AGENT_NAME' AS agent_name,
+#       'MODEL_NAME' AS model,
+#       'EXPLORE_NAME' AS explore
+#     -- UNION ALL
+#     -- SELECT
+#     --   'AGENT_NAME' AS agent_name,
+#     --   'MODEL_NAME' AS model,
+#     --   'EXPLORE_NAME' AS explore
+#     ;;
+#   }
+
+# }
