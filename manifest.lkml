@@ -28,6 +28,8 @@ application: chatter {
     use_iframes: yes
     new_window: yes
     new_window_external_urls: ["https://developers.generativeai.google/*"]
+    external_api_urls: ["https://dataqna.googleapis.com/v1alpha1/projects/sam-pitcher-playground:askQuestion", "https://dataqna.googleapis.com","https://localhost:8080","http://localhost:8080"]
+    oauth2_urls: ["https://accounts.google.com/o/oauth2/v2/auth"]
     local_storage: yes
   }
 }
