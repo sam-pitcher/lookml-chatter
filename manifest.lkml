@@ -19,9 +19,9 @@ constant: extra_context_table_name {
 
 application: chatter {
   label: "Chatter"
-  # url: "https://localhost:8080/bundle.js"
+  url: "https://localhost:8080/bundle.js"
   # - this is used in prod!
-  file: "bundle.js"
+  # file: "bundle.js"
   entitlements: {
     core_api_methods: ["me", "lookml_model_explore","create_sql_query","run_sql_query","run_query","create_query", "run_inline_query", "all_lookml_models", "use_form_submit", "lookml_model", "create_merge_query", "merge_query"]
     navigation: yes
@@ -32,5 +32,6 @@ application: chatter {
     external_api_urls: ["https://dataqna.googleapis.com/v1alpha1/projects/sam-pitcher-playground:askQuestion", "https://dataqna.googleapis.com","https://localhost:8080","http://localhost:8080"]
     oauth2_urls: ["https://accounts.google.com/o/oauth2/v2/auth"]
     local_storage: yes
+    global_user_attributes: ["chatter_chatter_gcp_client_id", "chatter_chatter_looker_api_client_id", "chatter_chatter_looker_api_client_secret"]
   }
 }
